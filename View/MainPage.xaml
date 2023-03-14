@@ -1,0 +1,52 @@
+﻿<Page x:Class="Aws.View.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Aws.View" xmlns:viewmodel="clr-namespace:Aws.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:MainPageVM}"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="MainPage">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+
+        <StackPanel Grid.RowSpan="3">
+            <Button Margin="10" VerticalAlignment="Bottom" Command="{Binding AddFileCommand}">Open file</Button>
+        </StackPanel>
+
+        <StackPanel Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="3">
+            <ListView 
+  ItemsSource="{Binding Files}" SelectedItem="{Binding SelectedFile}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn 
+        DisplayMemberBinding="{Binding FileName}"
+        Header="Name" />
+                        <GridViewColumn
+        DisplayMemberBinding="{Binding ModificationDate}"
+        Header="Modification Date" />
+                        <GridViewColumn
+        DisplayMemberBinding="{Binding FileSize}"
+        Header="Size" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <StackPanel>
+                <Button Margin="10" Command="{Binding DownloadFileCommand}">Download</Button>
+                <Button Margin="10" Command="{Binding DeleteFileCommand}">Delete</Button>
+            </StackPanel>
+        </StackPanel>
+        
+    </Grid>
+</Page>
