@@ -15,9 +15,8 @@ using System.Windows;
 
 namespace Aws.ViewModel
 {
-    public class MainPageVM : INotifyPropertyChanged
+    public class MainPageVM : BaseVM
     {
-        public event PropertyChangedEventHandler PropertyChanged;
 
         private AwsController _awsController;
 
@@ -126,7 +125,6 @@ namespace Aws.ViewModel
             _selectedFile = null;
         }
 
-        public void OnPropertyChanged([CallerMemberName] string prop = "") =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+      
     }
 }

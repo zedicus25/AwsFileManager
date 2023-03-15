@@ -17,14 +17,14 @@ using System.Windows.Shapes;
 namespace Aws.View
 {
     /// <summary>
-    /// Interaction logic for MainPage.xaml
+    /// Interaction logic for RekigPage.xaml
     /// </summary>
-    public partial class MainPage : UserControl
+    public partial class RekigPage : UserControl
     {
-        public MainPage()
+        public RekigPage()
         {
             InitializeComponent();
-            //this.DataContext = new MainPageVM();
+            //this.DataContext = new RekigPageVM();
         }
     }
 }

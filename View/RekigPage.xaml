@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="Aws.View.RekigPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Aws.View" xmlns:viewmodel="clr-namespace:Aws.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:RekigPageVM}"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      >
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Button  Grid.Column="0" Grid.Row="3" Margin="10" VerticalAlignment="Bottom" Command="{Binding AddFileCommand}">Open image</Button>
+        <ComboBox Grid.Column="1" Grid.Row="3" Margin="10" VerticalAlignment="Bottom" MinWidth="72" ItemsSource="{Binding Files}" SelectedValue="{Binding SelectedFile}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding FileName}"></TextBlock>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <Image Margin="10" Grid.RowSpan="3" Grid.ColumnSpan="2" Source="{Binding LastImage}"></Image>
+        <TextBlock Margin="10" FontSize="20" TextWrapping="WrapWithOverflow" Text="{Binding Lines}" Grid.Column="2" Grid.ColumnSpan="2" Grid.RowSpan="2"></TextBlock>
+        <TextBlock Margin="10" FontSize="20" TextWrapping="WrapWithOverflow" Text="{Binding Words}" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Grid.RowSpan="2"></TextBlock>
+    </Grid>
+</UserControl>

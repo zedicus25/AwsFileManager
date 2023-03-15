@@ -1,4 +1,6 @@
 ﻿using Amazon;
+using Amazon.Rekognition;
+using Amazon.Rekognition.Model;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Aws.Model;
@@ -10,12 +12,14 @@ using System.Linq;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 
 namespace Aws
 {
     public class AwsController
     {
         private AmazonS3Client _s3Client;
+        private AmazonRekognitionClient _amazonRekognition;
         private readonly string _bucketName;
         private readonly RegionEndpoint _region;
 
@@ -23,9 +27,11 @@ namespace Aws
         {
             string accesKey = ConfigurationManager.ConnectionStrings["accessKey"].ConnectionString;
             string secretKey = ConfigurationManager.ConnectionStrings["secretKey"].ConnectionString;
-            _bucketName = ConfigurationManager.ConnectionStrings["bucketName"].ConnectionString;
-            _region = RegionEndpoint.EUNorth1;
+            //_bucketName = ConfigurationManager.ConnectionStrings["bucketName"].ConnectionString;
+            _bucketName = ConfigurationManager.ConnectionStrings["rekigBucketName"].ConnectionString;
+            _region = RegionEndpoint.EUWest2;
             _s3Client = new AmazonS3Client(accesKey, secretKey, _region);
+            _amazonRekognition = new AmazonRekognitionClient(accesKey, secretKey, _region);
         }
 
         public List<AwsFile> ListBucketContents()
@@ -36,7 +42,7 @@ namespace Aws
                 var request = new ListObjectsV2Request
                 {
                     BucketName = _bucketName,
-                    MaxKeys = 5,
+                    MaxKeys = 35,
                 };
                 var response = new ListObjectsV2Response(); 
                 do
@@ -104,6 +110,67 @@ namespace Aws
             }; 
             var response = _s3Client.PutObject(request);
             return response.HttpStatusCode == System.Net.HttpStatusCode.OK;
+        }
+
+        public string GetLinesFromImage(string pic)
+        {
+            string fileInfo = "";
+
+            DetectTextRequest detectTextRequest = new DetectTextRequest()
+            {
+                Image = new Image()
+                {
+                    S3Object = new Amazon.Rekognition.Model.S3Object()
+                    {
+                        Name = pic,
+                        Bucket = _bucketName
+                    }
+                }
+            };
+
+            try
+            {
+                DetectTextResponse detectTextResponse = _amazonRekognition.DetectTextAsync(detectTextRequest).GetAwaiter().GetResult();
+                fileInfo += "Detected lines for " + pic + "\n";
+                foreach (TextDetection text in detectTextResponse.TextDetections.Where(x => x.Type == TextTypes.LINE))
+                {
+                    fileInfo += text.DetectedText + " ";
+                }
+            }
+            catch (Exception e)
+            {
+            }
+            return fileInfo;
+        }
+        public string GetWordsFromImage(string pic)
+        {
+            string fileInfo = "";
+
+            DetectTextRequest detectTextRequest = new DetectTextRequest()
+            {
+                Image = new Image()
+                {
+                    S3Object = new Amazon.Rekognition.Model.S3Object()
+                    {
+                        Name = pic,
+                        Bucket = _bucketName
+                    }
+                }
+            };
+
+            try
+            {
+                DetectTextResponse detectTextResponse = _amazonRekognition.DetectTextAsync(detectTextRequest).GetAwaiter().GetResult();
+                fileInfo += "Detected words for " + pic + "\n";
+                foreach (TextDetection text in detectTextResponse.TextDetections.Where(x => x.Type == TextTypes.WORD))
+                {
+                    fileInfo += text.DetectedText + " ";
+                }
+            }
+            catch (Exception e)
+            {
+            }
+            return fileInfo;
         }
     }
 }

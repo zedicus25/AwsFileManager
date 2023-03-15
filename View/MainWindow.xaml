@@ -4,8 +4,23 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Aws" xmlns:view="clr-namespace:Aws.View"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:viewmodel="clr-namespace:Aws.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:MainVM}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Background="#FF696767">
+        Title="MainWindow" Height="450" Width="800" Background="#FFBEBEBE">
+    <StackPanel Orientation="Horizontal">
+        <ToolBarTray  Orientation="Vertical">
+            <ToolBar
+                Style="{StaticResource MaterialDesignToolBar}"
+                ClipToBounds="False">
+                <Button Command="{Binding GoToRekig}"
+                    Content="{materialDesign:PackIcon Kind=Chocolate}" />
+                <Button Command="{Binding GoToMain}"
+                    Content="{materialDesign:PackIcon Kind=Taco}" />
 
-    <view:MainPage></view:MainPage>
+            </ToolBar>
+        </ToolBarTray>
+        <ContentControl Content="{Binding SelectedViewModel}"></ContentControl>
+    </StackPanel>
+    
+    
 </Window>
